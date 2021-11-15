@@ -7,18 +7,18 @@ using UnityEngine.EventSystems;
 public class ClickButton : MonoBehaviour, IPointerClickHandler
 {
     private CardView _cardData = null;
-    private ChekButton _chekButton;
+    private CheckButton _checkButton;
     private Spawner _spawner;
 
     private void Start()
     {
         _spawner = GetComponent<Spawner>();
-        _chekButton = GetComponent<ChekButton>();
+        _checkButton = GetComponent<CheckButton>();
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
         eventData.rawPointerPress.TryGetComponent<CardView>(out _cardData);
-        _chekButton.CheckAnswer(_cardData, _spawner.RightAnswer);
+        _checkButton.CheckAnswer(_cardData, _spawner.RightAnswer);
     }
 }

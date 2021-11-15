@@ -6,8 +6,9 @@ using UnityEngine.UI;
 
 public class RestartButton : MonoBehaviour
 {
-    private Button _restart;
     [SerializeField] private LoadGame _loadPanel;
+    
+    private Button _restart;
 
     private void Awake()
     {

@@ -5,24 +5,32 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Events;
 using Random = UnityEngine.Random;
+using Vector2 = System.Numerics.Vector2;
 
 public class Spawner : MonoBehaviour
 {
-    [SerializeField]private float xStep;
-    [SerializeField]private float yStep;
+    [SerializeField]private float _xStep = 4.5f;
+    [SerializeField]private float _yStep = 2.5f;
+    [SerializeField]private int _lineBreak = 3;
 
-    private Vector3 eazyLevel = new Vector3(-4, -1, 2f);
-    private Vector3 middleLevel = new Vector3(-4, 0, 2f);
-    private Vector3 hirdLevel = new Vector3(-4, 1.5f, 2f);
-    private Vector2 tmpVector;
+    [SerializeField]private Transform _easyLevel;
+    [SerializeField]private Transform _middleLevel;
+    [SerializeField]private Transform _hardLevel;
     
-    private RandomCardSelection rndCard = new RandomCardSelection();
-    private RandomTask rndTask = new RandomTask();
-    private int rndSet = 0;
-    private int rndRightCard = 0;
+    private Vector3 _tmpVector;
     
-    private string _rightAnswer = null;
-    private CardData rightCard = null;
+    private RandomCardSelection _rndCard = new RandomCardSelection();
+    private RandomTask _rndTask = new RandomTask();
+    private int _rndCardSet = 0;
+    private int _rndRightCard = 0;
+
+    private string _rightAnswer;
+    private CardData _rightCard = null;
+    
+    private int _easy = 0;
+    private int _middle = 3;
+    private int _hard = 6;
+    
 
     public string RightAnswer => _rightAnswer;
 
@@ -36,44 +44,44 @@ public class Spawner : MonoBehaviour
     public void CreateLevel(CardBundleData[] cardBundleData, int quantity, CardView cardView)
     {
         StartPoint(quantity);
-        rndSet = Random.Range(0, cardBundleData.Length);
-        SpawnTask(cardBundleData[rndSet]);
-        SpawnCard(cardBundleData[rndSet], quantity, cardView);
+        _rndCardSet = Random.Range(0, cardBundleData.Length);
+        SpawnTask(cardBundleData[_rndCardSet]);
+        SpawnCard(cardBundleData[_rndCardSet], quantity, cardView);
     }
     private void StartPoint(int quantity)
     {
-        if (quantity > 6) transform.position = hirdLevel;
-        else if (quantity > 3) transform.position = middleLevel;
-        else transform.position = eazyLevel;
+        if (quantity > _hard) transform.position = _hardLevel.position;
+        else if (quantity > _middle) transform.position = _middleLevel.position;
+        else transform.position = _easyLevel.position;
 
-        tmpVector = transform.position;
+        _tmpVector = transform.position;
     }
 
     private void SpawnTask(CardBundleData cardBundleData)
     {
-        _rightAnswer = rndTask.GetTask(cardBundleData);
+        _rightAnswer = _rndTask.GetTask(cardBundleData);
         Changed?.Invoke(_rightAnswer);
     }
     
     private void SpawnCard(CardBundleData cardBundleData, int quantity, CardView cardView)
     {
-        rndRightCard = Random.Range(0, quantity);
-        rndCard.Initilize(cardBundleData);
-        rightCard = rndCard.GetRightCard(_rightAnswer);
+        _rndRightCard = Random.Range(0, quantity);
+        _rndCard.Initialization(cardBundleData);
+        _rightCard = _rndCard.GetRightCard(_rightAnswer);
         
         for (int i = 0; i < quantity; i++)
         {
-            if (i % 3 == 0 && i != 0)
+            if (i % _lineBreak == 0 && i != 0)
             {
-                tmpVector.x = transform.position.x;
-                tmpVector.y = tmpVector.y - yStep;
+                _tmpVector.x = transform.position.x;
+                _tmpVector.y -= _yStep;
             }
             CardView newCard = Instantiate(cardView, transform);
-            newCard.transform.position = tmpVector;
-            if (i == rndRightCard) newCard.Initialized(rightCard);
-            else newCard.Initialized(rndCard.GetCard());
+            newCard.transform.position = _tmpVector;
+            if (i == _rndRightCard) newCard.Initialization(_rightCard);
+            else newCard.Initialization(_rndCard.GetCard());
             
-            tmpVector.x = tmpVector.x + xStep;
+            _tmpVector.x += _xStep;
         }
     }
 }

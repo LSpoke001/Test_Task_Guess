@@ -6,38 +6,38 @@ using Random = UnityEngine.Random;
 
 public class RandomCardSelection
 {
-    private List<CardData> _castomCard = new List<CardData>();
-    private int numRandomCard = 0;
-    private CardData tmp;
-    private CardData rightCard;
+    private List<CardData> _customCard = new List<CardData>();
+    private int _numRandomCard = 0;
+    private CardData _tmp;
+    private CardData _rightCard;
 
-    public void Initilize(CardBundleData cardBundleData)
+    public void Initialization(CardBundleData cardBundleData)
     {
-        _castomCard.RemoveAll(a => a != null);
+        _customCard.RemoveAll(a => a != null);
         foreach (var cardData in cardBundleData.CardData)
         {
-            _castomCard.Add(cardData);
+            _customCard.Add(cardData);
         }
     }
     public CardData GetCard()
     {
-        numRandomCard = Random.Range(0, _castomCard.Count);
-        tmp = _castomCard[numRandomCard];
-        _castomCard.Remove(tmp);
-        return tmp;
+        _numRandomCard = Random.Range(0, _customCard.Count);
+        _tmp = _customCard[_numRandomCard];
+        _customCard.Remove(_tmp);
+        return _tmp;
     }
 
     public CardData GetRightCard(string id)
     {
-        foreach (var card in _castomCard)
+        foreach (var card in _customCard)
         {
             if (id == card.Identifier)
             {
-                rightCard = card;
-                _castomCard.Remove(card);
+                _rightCard = card;
+                _customCard.Remove(card);
                 break;
             }
         }
-        return rightCard;
+        return _rightCard;
     }
 }

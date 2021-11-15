@@ -6,39 +6,31 @@ using DG.Tweening;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-public class ChekButton : MonoBehaviour
+public class CheckButton : MonoBehaviour
 {
     public UnityEvent victoryEvent;
-    public UnityEvent _stopEvent;
-    //private Spawner _spawner;
-    //private CardView _cardData = null;
+    public UnityEvent stopEvent;
+    
     private LevelManager _levelManager;
     private ClickButton _clickButton;
 
     private void Start()
     {
-       // _spawner = GetComponent<Spawner>();
         _levelManager = GetComponent<LevelManager>();
         _clickButton = GetComponent<ClickButton>();
     }
-
-
-    /*public void OnPointerClick(PointerEventData eventData)
-    {
-        eventData.rawPointerPress.TryGetComponent<CardView>(out _cardData);
-        CheckAnswer(_cardData, _spawner.RightAnswer);
-    }*/
 
     public void CheckAnswer(CardView card, string answer)
     {
         if (card.Identifier == answer)
         {
             VictoryButton();
+            card.BounceEffect();
         }
         else card.ShakeButton();
     }
     
-    public void VictoryButton()
+    private void VictoryButton()
     {
         victoryEvent.Invoke();
         _clickButton.enabled = false;
@@ -49,7 +41,7 @@ public class ChekButton : MonoBehaviour
     private IEnumerator WaitParticls()
     {
         yield return new WaitForSeconds(3f);
-        _stopEvent.Invoke();
+        stopEvent.Invoke();
         _levelManager.ChangeLevel();
         _clickButton.enabled = true;
     }

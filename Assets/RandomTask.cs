@@ -5,11 +5,11 @@ using Random = UnityEngine.Random;
 
 public class RandomTask 
 {
-    private int numRandomTask;
+    private int _numRandomTask;
     
     public string GetTask(CardBundleData cardBundleData)
     {
-        numRandomTask = Random.Range(0, cardBundleData.CardData.Length);
-        return cardBundleData.CardData[numRandomTask].Identifier;
+        _numRandomTask = Random.Range(0, cardBundleData.CardData.Length);
+        return cardBundleData.CardData[_numRandomTask].Identifier;
     }
 }

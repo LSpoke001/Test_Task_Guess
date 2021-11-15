@@ -6,12 +6,13 @@ using UnityEngine.UI;
 
 public class LoadGame : MonoBehaviour
 {
-    [SerializeField] private Image progressBar;
+    [SerializeField] private Image _progressBar;
     [SerializeField] private LevelManager _levelManager;
 
     private void Awake()
     {
         gameObject.SetActive(false);
+        _progressBar.fillAmount = 0f;
     }
 
     public void Loading()
@@ -20,11 +21,11 @@ public class LoadGame : MonoBehaviour
     }
     IEnumerator LoadingScreen()
     {
-        progressBar.fillAmount += 0.3f;
+        _progressBar.fillAmount += 0.3f;
         yield return new WaitForSeconds(.5f);
-        progressBar.fillAmount += 0.6f;
+        _progressBar.fillAmount += 0.6f;
         yield return new WaitForSeconds(.5f);
-        yield return null;
+        _progressBar.fillAmount = 0f;
         _levelManager.CreateNewLevel();
         gameObject.SetActive(false);
     }

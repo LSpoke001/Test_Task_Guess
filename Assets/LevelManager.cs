@@ -7,13 +7,12 @@ using UnityEngine.UI;
 
 public class LevelManager : MonoBehaviour
 {
-    [SerializeField] private CardView prefab;
+    [SerializeField] private CardView _prefab;
     [SerializeField] private CardBundleData[] _cardBundleData;
     [SerializeField] private int[] _level;
     [SerializeField] private Button _restartBtn;
 
     private int _numLevel = 0;
-
     private Spawner _spawner;
     
     private void Awake()
@@ -31,14 +30,11 @@ public class LevelManager : MonoBehaviour
             _numLevel = 0;
             _restartBtn.gameObject.SetActive(true);
         }
-        else
-        {
-            _spawner.CreateLevel(_cardBundleData, _level[_numLevel], prefab);
-        }
+        else _spawner.CreateLevel(_cardBundleData, _level[_numLevel], _prefab);
     }
 
     public void CreateNewLevel()
     {
-        _spawner.CreateLevel(_cardBundleData, _level[_numLevel], prefab);
+        _spawner.CreateLevel(_cardBundleData, _level[_numLevel], _prefab);
     }
 }

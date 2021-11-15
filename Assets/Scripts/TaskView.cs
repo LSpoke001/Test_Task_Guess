@@ -9,15 +9,10 @@ public class TaskView : MonoBehaviour
     [SerializeField] private Spawner _spawner;
     
     private Text _task;
-    private string answer;
 
     private void Start()
     {
         _task = GetComponent<Text>();
-    }
-
-    private void OnEnable()
-    {
         _spawner.Changed += ChangeTask;
     }
 
